@@ -1,4 +1,4 @@
-# JDBC Course Project
+# JDBC 
 
 Welcome to the **JDBC Course Project** repository! This project is designed to teach and demonstrate the use of **Java Database Connectivity (JDBC)**, a key API used to connect and interact with databases from Java applications.
 
