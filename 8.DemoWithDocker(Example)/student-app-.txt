@@ -1,0 +1,53 @@
+-> file : docker-compose.yml
+
+version: "3.7"
+
+services:
+  app:
+    build: .
+    ports:
+      - "8090:8090"
+    networks:
+      - s-network
+
+  postgres:
+    image: postgres:latest
+    container_name: postgres-container
+    environment:
+      POSTGRES_USER: navin
+      POSTGRES_PASSWORD: 1234
+      POSTGRES_DB: ankit
+    ports:
+      - 5432:5432
+    networks:
+      - s-network
+    volumes:
+      - postgres-s-data:/var/lib/postgresql/data
+
+networks:
+  s-network:
+    driver: bridge
+
+volumes:
+  postgres-s-data:
+
+
+-> file : application.properties
+
+spring.datasource.url=jdbc:postgresql://postgres-container:5432/ankit
+spring.datasource.username=navin
+spring.datasource.password=1234
+spring.jpa.hibernate.ddl-auto=update
+spring.h2.console.enabled=true
+spring,jpa.show-sql=true
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
+spring.sql.init.mode=always
+spring.sql.init.platform=postgres
+spring.jpa.defer-datasource-initialization=true
+
+
+-> file : Dockerfile
+
+FROM openjdk:22-jdk
+ADD target/student-app.jar student-app.jar
+ENTRYPOINT ["java", "-jar", "/student-app.jar"]
